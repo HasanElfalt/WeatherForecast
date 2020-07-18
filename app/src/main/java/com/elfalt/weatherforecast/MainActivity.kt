@@ -9,10 +9,12 @@ import com.elfalt.weatherforecast.models.WeatherInfo
 import com.elfalt.weatherforecast.models.WeatherResponse
 import com.elfalt.weatherforecast.network.ApiService
 import com.elfalt.weatherforecast.network.RetrofitClient
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         })
         search_fab.setOnClickListener {
             if(textCount==0){
-                refreshWeather()
+                refreshWeather(cityName.text.toString())
             }else{
                 searchForWeather(enter_location.text.toString())
                 enter_location.setText("")
@@ -58,37 +60,44 @@ class MainActivity : AppCompatActivity() {
                     if(response.isSuccessful){
                         val res = response.body()!!
                         cityName.text = res.name
-                        val weather : List<WeatherInfo> = res.weather
+                        val weather: List<WeatherInfo> = res.weather
                         temp_description.text = weather[0].main
-                        weatherIcon.setImageResource(getImageDrawable(res.weather[0].id))
-                        celsius_temperature.text = res.main.temp.toString()
+                        Picasso.get()
+                            .load("https://openweathermap.org/img/wn/" + res.weather[0].icon + "@4x.png")
+                            .into(weatherIcon)
+                        celsius_temperature.text = convertToCelsius(res.main.temp)
+
+                    }else{
+                        Toast.makeText(this@MainActivity,"wrong city name",Toast.LENGTH_SHORT).show()
                     }
                 }
 
             })
 
-        Toast.makeText(this,"search for $city weather",Toast.LENGTH_SHORT).show()
     }
 
-    private fun refreshWeather() {
-        Toast.makeText(this,"refreshed",Toast.LENGTH_SHORT).show()
-    }
-    private fun getImageDrawable(id : Int) : Int{
+    private fun refreshWeather(city : String) {
+        apiService.getWeatherCity(city,"758e01569bfe7fa793f65dd3594fd946")
+            .enqueue(object : Callback<WeatherResponse>{
+                override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                    Toast.makeText(this@MainActivity,"Error onFailure",Toast.LENGTH_SHORT).show()
+                }
 
-        return when(id){
-            200,201,202,210,211,212,221,230,231,232 -> R.drawable.ic_wi_thunderstorm
-            300,301,302,310,311,312,313,314,321 -> R.drawable.ic_wi_sprinkle
-            500, 501, 502,503,504,511,520,521,522,531,701 -> R.drawable.ic_wi_rain
-            600,601, 602,611,612, 613,615,616,620,621,622 -> R.drawable.ic_wi_snow
-            711 -> R.drawable.ic_wi_smoke
-            721 -> R.drawable.ic_wi_day_haze
-            731,761,762 -> R.drawable.ic_wi_dust
-            741 -> R.drawable.ic_wi_fog
-            771 -> R.drawable.ic_wi_cloudy_gusts
-            781 -> R.drawable.ic_wi_tornado
-            800 -> R.drawable.ic_wi_day_sunny
-            801,802,803,804 -> R.drawable.ic_wi_cloudy
-            else -> R.drawable.ic_wi_alien
-        }
+                override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+                    if(response.isSuccessful){
+                        val res = response.body()!!
+                        val weather : List<WeatherInfo> = res.weather
+                        temp_description.text = weather[0].main
+                        Picasso.get().load("https://openweathermap.org/img/wn/${res.weather[0].icon}@4x.png").into(weatherIcon)
+                        celsius_temperature.text = convertToCelsius(res.main.temp)
+                        Toast.makeText(this@MainActivity,"refreshed",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            })
+    }
+
+    private fun convertToCelsius(temp : Float):String{
+        return "%.2f".format(temp - 273.15)
     }
 }
