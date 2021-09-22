@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+def getApiKey() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("ApiKey");
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -14,6 +20,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "ApiKey", "\""+getApiKey()+"\""
     }
     compileOptions {
         sourceCompatibility 1.8

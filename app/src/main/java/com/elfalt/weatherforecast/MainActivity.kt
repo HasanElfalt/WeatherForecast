@@ -9,16 +9,17 @@ import com.elfalt.weatherforecast.models.WeatherInfo
 import com.elfalt.weatherforecast.models.WeatherResponse
 import com.elfalt.weatherforecast.network.ApiService
 import com.elfalt.weatherforecast.network.RetrofitClient
+import com.squareup.picasso.BuildConfig
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
     var textCount : Int = 0
+    private val apiKey = com.elfalt.weatherforecast.BuildConfig.ApiKey
 
     private lateinit var apiService : ApiService
 
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun searchForWeather(city: String) {
 
-        apiService.getWeatherCity(city,"758e01569bfe7fa793f65dd3594fd946")
+        apiService.getWeatherCity(city,apiKey)
             .enqueue(object : Callback<WeatherResponse>{
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                     Toast.makeText(this@MainActivity,"Error onFailure",Toast.LENGTH_SHORT).show()
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshWeather(city : String) {
-        apiService.getWeatherCity(city,"758e01569bfe7fa793f65dd3594fd946")
+        apiService.getWeatherCity(city,apiKey)
             .enqueue(object : Callback<WeatherResponse>{
                 override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                     Toast.makeText(this@MainActivity,"Error onFailure",Toast.LENGTH_SHORT).show()
