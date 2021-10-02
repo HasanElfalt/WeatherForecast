@@ -11,11 +11,11 @@ The user type a city name and with the help of openWeatherMaps Api and that's th
 - Uses Picasso for image loading.
 
 ## Screenshots
-![Screenshot from 2021-09-22 22-29-25](https://user-images.githubusercontent.com/35868106/134418570-d99e57c6-2044-465f-a61e-f57db54001e7.png)
+![image](https://user-images.githubusercontent.com/35868106/135733896-e0313629-e80d-4d34-929d-5854be1795d1.png)
 
-![Screenshot from 2021-09-22 22-30-00](https://user-images.githubusercontent.com/35868106/134418576-87fa73d3-3263-4792-b0e1-fa43d83f9ccf.png)
+![image](https://user-images.githubusercontent.com/35868106/135733919-94c28323-6b4a-4b96-b53d-9976b3aa0fb3.png)
 
-![Screenshot from 2021-09-22 22-30-23](https://user-images.githubusercontent.com/35868106/134418580-e39a3cee-1cad-4da8-9df8-f6508d845952.png)
+![image](https://user-images.githubusercontent.com/35868106/135733928-21a05743-1b48-4e1b-8e6e-bf03301c1cf5.png)
 
 ## Configuration
 In order to run this application, you need to get your own key from open Weather map api. You can do that by clicking [here](https://home.openweathermap.org/users/sign_up).
