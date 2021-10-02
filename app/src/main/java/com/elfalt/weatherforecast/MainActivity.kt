@@ -1,5 +1,6 @@
 package com.elfalt.weatherforecast
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,7 +10,6 @@ import com.elfalt.weatherforecast.models.WeatherInfo
 import com.elfalt.weatherforecast.models.WeatherResponse
 import com.elfalt.weatherforecast.network.ApiService
 import com.elfalt.weatherforecast.network.RetrofitClient
-import com.squareup.picasso.BuildConfig
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -19,13 +19,19 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     var textCount : Int = 0
-    private val apiKey = com.elfalt.weatherforecast.BuildConfig.ApiKey
+    private val apiKey = BuildConfig.ApiKey
 
     private lateinit var apiService : ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimaryDark, theme)))
+        }else{
+            supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.colorPrimaryDark)))
+        }
 
         apiService = RetrofitClient.getClient().create(ApiService::class.java)
 

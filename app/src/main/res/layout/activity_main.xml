@@ -14,7 +14,7 @@
         android:textSize="24sp"
         android:id="@+id/celsius_sign"
         android:text="@string/celsius_sign"
-        app:layout_constraintBottom_toTopOf="@id/celsius_temperature"
+        app:layout_constraintTop_toTopOf="@id/celsius_temperature"
         app:layout_constraintStart_toEndOf="@id/celsius_temperature" />
 
     <TextView
